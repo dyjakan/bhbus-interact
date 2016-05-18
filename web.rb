@@ -10,17 +10,14 @@ get '/' do
 
 
   output = {response_type: "in_channel"}
-  line = ""
-  attachments = []
+  buses = ""
   Nokogiri::HTML(html).css("tr[class='rowServiceDeparture']").each_with_index do |row, i|
-    line += row.css("td[class='colServiceName']").text
-    line += " (" + row.css("td")[1]["title"] + ")"
-    line += ": "
-    line += row.css("td[data-departuretime]").text
-    line += " (" + row.css("td")[2]["data-departuretime"] + ")"
-    attachments << {text: line}
-    line = ""
+    buses += row.css("td[class='colServiceName']").text
+    buses += " (" + row.css("td")[1]["title"] + ")"
+    buses += ": "
+    buses += row.css("td[data-departuretime]").text
+    buses += " (" + row.css("td")[2]["data-departuretime"] + ")\n"
   end
-  output["attachments"] = attachments
+  output["text"] = buses
   output.to_json
 end
