@@ -22,5 +22,5 @@ require 'json'
     line = ""
   end
   output["attachments"] = attachments
-  puts output.to_json
+  output.to_json
 end
