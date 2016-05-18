@@ -8,8 +8,6 @@ get '/' do
   html = resp[91..-4]
   html.gsub!("\\\"", "\"")
 
-
-  output = {response_type: "in_channel"}
   buses = ""
   Nokogiri::HTML(html).css("tr[class='rowServiceDeparture']").each_with_index do |row, i|
     buses += row.css("td[class='colServiceName']").text
@@ -18,6 +16,6 @@ get '/' do
     buses += row.css("td[data-departuretime]").text
     buses += " (" + row.css("td")[2]["data-departuretime"] + ")\n"
   end
-  output["text"] = buses
-  output.to_json
+  content_type :json
+  {response_type: "in_channel", text: buses}.to_json
 end
