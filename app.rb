@@ -4,13 +4,12 @@ require 'nokogiri'
 require 'json'
 
 get '/times/:name' do
-  base_url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?callback=BusCms.widgets[%27widgetLookupDepartures_stop-departureboardCanvas%27].loadStopTimes_callback&_=&clientid=BrightonBuses&sourcetype=siri&stopid=7731&format=jsonp&servicenamefilter="
+  base_url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&stopid=7731&format=jsonp&servicenamefilter="
   response = HTTParty.get(base_url)
-  html = response[91..-4]
-  html.gsub!("\\\"", "\"")
+  response.gsub!("\\\"", "\"")
 
   bus_list = ""
-  Nokogiri::HTML(html).css("tr[class='rowServiceDeparture']").each_with_index do |row, i|
+  Nokogiri::HTML(response).css("tr[class='rowServiceDeparture']").each_with_index do |row, i|
     bus_list += row.css("td[class='colServiceName']").text
     bus_list += " (" + row.css("td")[1]["title"] + ")"
     bus_list += ": "
