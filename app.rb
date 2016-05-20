@@ -19,6 +19,13 @@ get '/' do
   respond_with buses
 end
 
+get '/search/:name' do
+  stop_name = params['name'].gsub(" ", "+")
+  base_url = "http://bh.buscms.com/api/rest/ent/stop.aspx?callback=jsonp1463771285418&clientid=BrightonBuses&method=search&format=jsonp&q="
+  resp = HTTParty.get(base_url + stop_name)
+  respond_with resp
+end
+
 def respond_with message
   content_type :json
   {response_type: "in_channel", text: message}.to_json
