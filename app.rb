@@ -23,3 +23,8 @@ def respond_with message
   content_type :json
   {response_type: "in_channel", text: message}.to_json
 end
+
+error Sinatra::NotFound do
+  content_type 'text/plain'
+  [404, 'Not Found']
+end
