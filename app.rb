@@ -16,6 +16,10 @@ get '/' do
     buses += row.css("td[data-departuretime]").text
     buses += " (" + row.css("td")[2]["data-departuretime"] + ")\n"
   end
+  respond_with buses
+end
+
+def respond_with message
   content_type :json
-  {response_type: "in_channel", text: buses}.to_json
+  {response_type: "in_channel", text: message}.to_json
 end
