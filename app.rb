@@ -20,10 +20,13 @@ get '/' do
 end
 
 get '/search/:name' do
-  stop_name = params['name'].gsub(" ", "+")
+  resp = search params['name'].gsub(" ", "+")
+  "#{resp}"
+end
+
+def search stop_name
   base_url = "http://bh.buscms.com/api/rest/ent/stop.aspx?callback=jsonp1463771285418&clientid=BrightonBuses&method=search&format=jsonp&q="
-  resp = HTTParty.get(base_url + stop_name)
-  respond_with resp
+  HTTParty.get(base_url + stop_name)
 end
 
 def respond_with message
