@@ -25,7 +25,7 @@ get '/stops/:name' do
 end
 
 def get_stops(name)
-  base_url = "http://bh.buscms.com/api/rest/ent/stop.aspx?callback=jsonp1463771285418&clientid=BrightonBuses&method=search&format=jsonp&q="
+  base_url = "http://bh.buscms.com/api/rest/ent/stop.aspx?clientid=BrightonBuses&method=search&format=jsonp&q="
   HTTParty.get(base_url + name)
 end
 
