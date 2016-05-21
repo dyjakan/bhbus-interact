@@ -4,7 +4,7 @@ require 'nokogiri'
 require 'json'
 
 get '/times/:name' do
-  base_url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&stopid=7731&format=jsonp&servicenamefilter="
+  base_url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&format=jsonp&stopid=7731"
   response = HTTParty.get(base_url)
   response.gsub!("\\\"", "\"")
 
