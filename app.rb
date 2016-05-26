@@ -5,7 +5,7 @@ require 'json'
 
 get '/times/:name' do
   base_url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&format=jsonp&stopid=7731"
-  response = HTTParty.get(base_url)
+  response = HTTParty.get(base_url).parsed_response
   response.gsub!("\\\"", "\"")
 
   bus_list = ""
@@ -26,7 +26,7 @@ end
 
 def get_stops(name)
   base_url = "http://bh.buscms.com/api/rest/ent/stop.aspx?clientid=BrightonBuses&method=search&format=jsonp&q="
-  HTTParty.get(base_url + name)
+  HTTParty.get(base_url + name).parsed_response
 end
 
 def respond_with(message)
