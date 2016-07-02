@@ -4,7 +4,9 @@ require 'nokogiri'
 require 'json'
 
 get '/times/:name' do
-  base_url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&format=jsonp&stopid=7731"
+  stops = get_stops params['name'].gsub(" ", "+")
+  stop_id = stops["result"][0]["stopId"]
+  base_url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&format=jsonp&stopid=#{stop_id}"
   response = HTTParty.get(base_url).parsed_response
   response.gsub!("\\\"", "\"")
 
@@ -26,12 +28,15 @@ end
 
 def get_stops(name)
   base_url = "http://bh.buscms.com/api/rest/ent/stop.aspx?clientid=BrightonBuses&method=search&format=jsonp&q="
-  HTTParty.get(base_url + name).parsed_response
+  stops = HTTParty.get(base_url + name).parsed_response
+  stops.gsub!("(", "")
+  stops.gsub!(");", "")
+  JSON.parse(stops)
 end
 
 def respond_with(message)
   content_type :json
-  {text: message}.to_json
+  {text: message, mrkdwn_in: "text"}.to_json
 end
 
 error Sinatra::NotFound do
