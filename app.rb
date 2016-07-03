@@ -5,6 +5,9 @@ require 'json'
 
 get '/times/:name' do
   stops = get_stops params['name'].gsub(" ", "+")
+  return respond_with "Specified stop does not exist." if stops["result"].size == 0
+  return respond_with "There are multiple bus stops of this name. Please, use `stops` command to list them all." if stops["result"].size > 1
+
   stop_id = stops["result"][0]["stopId"]
   base_url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&format=jsonp&stopid=#{stop_id}"
   response = HTTParty.get(base_url).parsed_response
