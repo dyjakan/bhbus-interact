@@ -26,7 +26,10 @@ end
 
 get '/stops/:name' do
   stops = get_stops params['name'].gsub(" ", "+")
-  "#{stops}"
+  return respond_with "Specified stop does not exist." if stops["result"].size == 0
+  stops_list = ""
+  stops["result"].each { |x| stops_list += x["stopName"].gsub(")", "") + " (ID: #{x["stopId"]})\n" }
+  respond_with stops_list
 end
 
 def get_stops(name)
