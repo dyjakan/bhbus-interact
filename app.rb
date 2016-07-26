@@ -3,7 +3,8 @@ require 'httparty'
 require 'nokogiri'
 require 'json'
 
-get '/' do
+post '/' do
+  puts params
   respond_with "tbc"
 end
 
@@ -27,8 +28,8 @@ helpers do
     return respond_with "There are multiple bus stops with this name. Please, use `stops` command to list them all." if stops["result"].size > 1
 
     stop_id = stops["result"][0]["stopId"]
-    base_url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&format=jsonp&stopid=#{stop_id}"
-    response = HTTParty.get(base_url).parsed_response
+    url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&format=jsonp&stopid=#{stop_id}"
+    response = HTTParty.get(url).parsed_response
     response.gsub!("\\\"", "\"")
 
     bus_list = ""
@@ -54,8 +55,8 @@ helpers do
   end
 
   def get_stops(name)
-    base_url = "http://bh.buscms.com/api/rest/ent/stop.aspx?clientid=BrightonBuses&method=search&format=jsonp&q="
-    stops = HTTParty.get(base_url + name).parsed_response
+    url = "http://bh.buscms.com/api/rest/ent/stop.aspx?clientid=BrightonBuses&method=search&format=jsonp&q=#{name}"
+    stops = HTTParty.get(url).parsed_response
     stops.gsub!("(", "")
     stops.gsub!(");", "")
     JSON.parse(stops)
