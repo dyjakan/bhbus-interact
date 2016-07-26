@@ -29,11 +29,11 @@ helpers do
 
     stop_id = stops["result"][0]["stopId"]
     url = "http://bh.buscms.com/api/REST/html/departureboard.aspx?clientid=BrightonBuses&sourcetype=siri&format=jsonp&stopid=#{stop_id}"
-    response = HTTParty.get(url).parsed_response
-    response.gsub!("\\\"", "\"")
+    timetable = HTTParty.get(url).parsed_response
+    timetable.gsub!("\\\"", "\"")
 
     bus_list = ""
-    Nokogiri::HTML(response).css("tr[class='rowServiceDeparture']").each_with_index do |row, i|
+    Nokogiri::HTML(timetable).css("tr[class='rowServiceDeparture']").each_with_index do |row, i|
       bus_list += row.css("td[class='colServiceName']").text
       bus_list += " (" + row.css("td")[1]["title"] + ")"
       bus_list += ": "
