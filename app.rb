@@ -28,7 +28,7 @@ get '/stops/:name' do
   stops = get_stops params['name'].gsub(" ", "+")
   return respond_with "Specified stop does not exist." if stops["result"].size == 0
   stops_list = ""
-  stops["result"].each { |x| stops_list += x["stopName"].gsub(")", "") + " (ID: #{x["stopId"]})\n" }
+  stops["result"].each { |stop| stops_list += stop["stopName"].gsub(")", "") + " (NAPTAN: #{stop["NaptanCode"]})\n" }
   respond_with stops_list
 end
 
