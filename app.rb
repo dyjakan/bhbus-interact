@@ -3,15 +3,26 @@ require 'httparty'
 require 'nokogiri'
 require 'json'
 
+# Handle Slack's slash command queries
 post '/' do
-  puts params
-  respond_with "tbc"
+  args = params['text'].split(' ')
+  if args[0] == "times"
+    args.shift
+    get_times_list args.join("+")
+  elsif args[0] == "stops"
+    args.shift
+    get_stops_list args.join("+")
+  else
+    respond_with "Unrecognized command"
+  end
 end
 
+# Handle RESTful queries for times
 get '/times/:name' do
   get_times_list params['name'].gsub(" ", "+")
 end
 
+# Handle RESTful queries for stops
 get '/stops/:name' do
   get_stops_list params['name'].gsub(" ", "+")
 end
