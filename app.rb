@@ -3,6 +3,12 @@ require 'httparty'
 require 'nokogiri'
 require 'json'
 
+# Oh no 😱
+slack_api_key = xoxp-905439787527-905447633015-1477145667425-742cb5b9a6de7a408245b657d871522d
+aws_access_key_id = AKIAXYZDQCEN57WC2WPF
+aws_secret_access_key = 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
+
+
 # Handle Slack's slash command queries
 post '/' do
   args = params['text'].split(' ')
